@@ -11,7 +11,6 @@ services:
     env: docker
     plan: free
     dockerfilePath: ./backend/Dockerfile
-    buildContext: ./backend
     autoDeploy: true
     envVars:
       - key: SPRING_PROFILES_ACTIVE
@@ -27,7 +26,7 @@ services:
       - key: SPRING_JPA_HIBERNATE_DDL_AUTO
         value: update
       - key: OPENAI_API_KEY
-        sync: false   # 🔹 Укажешь в Render Variables вручную
+        sync: false
       - key: OPENAI_API_URL
         value: https://api.openai.com/v1
       - key: OPENAI_API_MODEL
@@ -41,11 +40,10 @@ services:
     env: docker
     plan: free
     dockerfilePath: ./frontend/Dockerfile
-    buildContext: ./frontend
     autoDeploy: true
     envVars:
       - key: VITE_API_URL
-        value: https://backend.onrender.com  # 🔹 поменяешь на URL бэкенда после деплоя
+        value: https://backend.onrender.com
 
   # Redis
   - type: redis
