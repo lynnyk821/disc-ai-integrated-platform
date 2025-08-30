@@ -1,0 +1,53 @@
+databases:
+  - name: disc-db
+    databaseName: disc_analysis
+    user: postgres
+    plan: free
+
+services:
+  # Backend (Spring Boot)
+  - type: web
+    name: backend
+    env: docker
+    plan: free
+    dockerfilePath: ./backend/Dockerfile
+    buildContext: ./backend
+    autoDeploy: true
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: docker
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: disc-db
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        value: postgres
+      - key: SPRING_DATASOURCE_PASSWORD
+        value: password
+      - key: SPRING_JPA_HIBERNATE_DDL_AUTO
+        value: update
+      - key: OPENAI_API_KEY
+        sync: false   # 🔹 Укажешь в Render Variables вручную
+      - key: OPENAI_API_URL
+        value: https://api.openai.com/v1
+      - key: OPENAI_API_MODEL
+        value: gpt-3.5-turbo
+      - key: OPENAI_API_TEMPERATURE
+        value: "0.5"
+
+  # Frontend (React)
+  - type: web
+    name: frontend
+    env: docker
+    plan: free
+    dockerfilePath: ./frontend/Dockerfile
+    buildContext: ./frontend
+    autoDeploy: true
+    envVars:
+      - key: VITE_API_URL
+        value: https://backend.onrender.com  # 🔹 поменяешь на URL бэкенда после деплоя
+
+  # Redis
+  - type: redis
+    name: disc-redis
+    plan: free
