@@ -1,11 +1,10 @@
 databases:
   - name: disc-db
     databaseName: disc_analysis
-    user: postgres
+    user: disc_user
     plan: free
 
 services:
-  # Backend (Spring Boot)
   - type: web
     name: backend
     env: docker
@@ -20,9 +19,11 @@ services:
           name: disc-db
           property: connectionString
       - key: SPRING_DATASOURCE_USERNAME
-        value: postgres
+        value: disc_user
       - key: SPRING_DATASOURCE_PASSWORD
-        value: password
+        fromDatabase:
+          name: disc-db
+          property: password
       - key: SPRING_JPA_HIBERNATE_DDL_AUTO
         value: update
       - key: OPENAI_API_KEY
@@ -33,8 +34,11 @@ services:
         value: gpt-3.5-turbo
       - key: OPENAI_API_TEMPERATURE
         value: "0.5"
+      - key: REDIS_URL
+        fromService:
+          name: disc-redis
+          property: connectionString
 
-  # Frontend (React)
   - type: web
     name: frontend
     env: docker
@@ -45,7 +49,7 @@ services:
       - key: VITE_API_URL
         value: https://backend.onrender.com
 
-  # Redis
   - type: redis
     name: disc-redis
+    ipAllowList: []
     plan: free
