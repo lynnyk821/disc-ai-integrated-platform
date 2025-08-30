@@ -19,7 +19,7 @@ This application helps you visualize, compare, and analyze team members' behavio
 The application is a full-stack solution with the following components:
 
 - **Backend**: A Spring Boot REST API handles all data processing, business logic, and API endpoints.
-- **Frontend**: A modern web application (to be implemented) using React, Vue, or Angular will provide the user interface.
+- **Frontend**: A modern web application using React.
 - **AI Integration**: The OpenAI API powers the natural language processing for the chatbot.
 - **Database**: PostgreSQL provides persistent storage for all employee and assessment data.
 - **Containerization**: The entire application is packaged with Docker for easy, consistent deployment.
