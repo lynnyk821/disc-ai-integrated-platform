@@ -39,8 +39,12 @@ These instructions will get the backend server up and running on your local mach
 ### Prerequisites
 
 - Docker and Docker Compose must be installed on your system.
-- An OpenAI API key is required for the chatbot functionality.
-
+- Create a local .env file and fill in the environment variables based on those defined in the docker-compose.yml, updating them with your own values
+    - Backend & frontend ports
+    - PostgreSQL credentials
+    - Redis configuration
+    - OpenAI API key
+  
 ### Installation & Running
 
 1. **Clone the repository:**
@@ -54,9 +58,8 @@ These instructions will get the backend server up and running on your local mach
    ```yaml
    OPENAI_API_KEY=your_open_ai_api_key
    ```
-3. ** 
 
-4. **Build and start the application:**
+3**Build and start the application:**
    ```bash
    docker-compose up --build
    ```
