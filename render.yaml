@@ -1,11 +1,12 @@
 services:
-  # Backend (Spring Boot)
   - type: web
     name: backend
     env: docker
     plan: free
     dockerfilePath: ./backend/Dockerfile
     envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: production
       - key: OPENAI_API_KEY
         sync: false
       - key: OPENAI_API_URL
@@ -14,19 +15,12 @@ services:
         value: gpt-3.5-turbo
       - key: OPENAI_API_TEMPERATURE
         value: "0.7"
-      - key: REDIS_HOST
-        fromService:
-          name: redis
-          property: connectionString
-          type: redis  # Changed from "URL" to "redis"
-
-
-  # Redis
-  - type: redis
-    name: redis
-    ipAllowList: [] # доступ тільки з приватної мережі Render
+      # Використовуйте зовнішній Redis або видаліть
+      - key: REDIS_URL
+        value: redis://your-free-redis-url.com:6379
 
 databases:
   - name: disc-db
     databaseName: disc_platform
     user: disc_platform
+    plan: free
