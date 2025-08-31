@@ -1,12 +1,13 @@
 # === Stage 1: Build the application ===
-FROM gradle:7.4.2-jdk17-alpine as builder
+FROM gradle:8.8.0-jdk21-alpine as builder
 
 # Встановлюємо робочу директорію
 WORKDIR /app
 
-# Копіюємо файли Gradle (спочатку копіюємо ці файли для кращого кешування)
+# Копіюємо файли Gradle для кращого кешування
 COPY backend/gradle ./gradle
 COPY backend/gradlew .
+COPY backend/gradle.properties .
 COPY backend/build.gradle .
 COPY backend/settings.gradle .
 
@@ -20,7 +21,7 @@ COPY backend/src ./src
 RUN ./gradlew build -x test --no-daemon
 
 # === Stage 2: Run the application ===
-FROM openjdk:17-alpine
+FROM eclipse-temurin:21-jre-alpine
 
 # Встановлюємо робочу директорію
 WORKDIR /app
