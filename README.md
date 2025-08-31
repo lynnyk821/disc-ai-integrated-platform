@@ -59,7 +59,7 @@ These instructions will get the backend server up and running on your local mach
    OPENAI_API_KEY=your_open_ai_api_key
    ```
 
-3**Build and start the application:**
+3. **Build and start the application:**
    ```bash
    docker-compose up --build
    ```
