@@ -15,23 +15,6 @@ import java.time.Duration;
 public class RedisConfig {
 
     @Bean
-    public LettuceConnectionFactory redisConnectionFactory() {
-        RedisStandaloneConfiguration redisConfig = new RedisStandaloneConfiguration();
-        redisConfig.setHostName("my-redis");
-        redisConfig.setPort(6379);
-
-        LettuceClientConfiguration clientConfig = LettuceClientConfiguration.builder()
-                .commandTimeout(Duration.ofSeconds(5)) // таймаут команд
-                .shutdownTimeout(Duration.ofSeconds(5))
-                .build();
-
-        LettuceConnectionFactory factory = new LettuceConnectionFactory(redisConfig, clientConfig);
-        factory.setValidateConnection(true);
-        factory.afterPropertiesSet();
-        return factory;
-    }
-
-    @Bean
     public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory connectionFactory) {
         RedisTemplate<String, String> template = new RedisTemplate<>();
         template.setConnectionFactory(connectionFactory);

@@ -4,11 +4,19 @@ The DISC Team Insights App is a full-stack, AI-powered platform designed to anal
 
 ## 📖 Overview
 
-This application helps you visualize, compare, and analyze team members' behavioral profiles based on their DISC assessment scores. It's built as a full-stack solution with a powerful backend, a planned frontend, and integrated AI capabilities to provide actionable insights.
+This application helps visualize, compare, and analyze team members' behavioral profiles based on their DISC assessment scores.
+It is designed as a full-stack solution with:
 
+-- A powerful Spring Boot backend
+-- A planned React frontend
+-- Integrated AI capabilities for insights
+
+Integrated AI capabilities for insights
 ## 🎯 Key Features
 
-- **Data Upload**: Easily upload and parse DISC assessment data from CSV or Excel files.
+- **Data Upload**: Upload DISC assessment data from CSV or Excel files.
+   - **Excel** → full employee information
+   - **CSV** → lightweight chart data
 - **Interactive Visualization**: Plot employees on a Cartesian DISC chart to see their behavioral tendencies at a glance.
 - **Employee Comparison**: Select and compare multiple employees to analyze their behavioral profiles and potential synergies or conflicts.
 - **AI Chatbot**: Get AI-powered insights by asking natural language questions about your team's dynamics.
@@ -37,8 +45,8 @@ These instructions will get the backend server up and running on your local mach
 
 1. **Clone the repository:**
    ```bash
-   git clone <repository-url>
-   cd disc-team-insights
+   git clone https://github.com/lynnyk821/disc-ai-integrated-platform
+   cd disc-ai-integrated-platform
    ```
 
 2. **Set up environment variables:**
@@ -46,8 +54,9 @@ These instructions will get the backend server up and running on your local mach
    ```yaml
    OPENAI_API_KEY=your_open_ai_api_key
    ```
+3. ** 
 
-3. **Build and start the application:**
+4. **Build and start the application:**
    ```bash
    docker-compose up --build
    ```
@@ -55,37 +64,22 @@ These instructions will get the backend server up and running on your local mach
 ### Access the Application
 
 - **Backend API**: http://localhost:8080
-- **Frontend** (when implemented): http://localhost:3000
+- **Frontend**: http://localhost:3000
 - **PostgreSQL Database**: Available on port 5432
+- **Redis**: Available on port 1
 
-## 📁 Project Structure
-
-```
-disc-team-insights/
-├── backend/
-│   ├── src/main/java/com/discapp/
-│   │   ├── controller/          # REST controllers
-│   │   ├── service/            # Business logic
-│   │   ├── repository/         # Data access layer
-│   │   └── dto/               # Data transfer objects
-│   └── Dockerfile
-├── frontend/                   # (To be implemented)
-├── docker-compose.yml
-├── .env
-└── README.md
-```
 
 ## 🔌 API Endpoints
 
 The backend provides the following RESTful endpoints:
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/chart` | GET | Retrieves all employee data for chart visualization. |
-| `/employees` | GET | Fetches a list of all employees. |
-| `/compare/employees` | POST | Compares selected employees and returns analytical insights. |
-| `/upload/disc` | POST | Uploads and processes DISC assessment data from a file. |
-| `/assistant/ask` | POST | Sends a natural language query to the AI chatbot. |
+| Endpoint                 | Method | Description |
+|--------------------------|--------|-------------|
+| `/api/chart`             | GET | Retrieves all employee data for chart visualization. |
+| `/api/employees`         | GET | Fetches a list of all employees. |
+| `/api/compare/employees` | POST | Compares selected employees and returns analytical insights. |
+| `/api/upload/disc`       | POST | Uploads and processes DISC assessment data from a file. |
+| `/api/assistant/ask`     | POST | Sends a natural language query to the AI chatbot. |
 
 ## 🛠️ Technologies Used
 
@@ -94,12 +88,13 @@ The backend provides the following RESTful endpoints:
 - **Spring Web**: Used for developing RESTful APIs.
 - **Lombok**: Reduces boilerplate code.
 - **OpenCSV & Apache POI**: For parsing CSV and Excel files.
+- **Redis** For AI temporary memory
 - **PostgreSQL**: The relational database.
 - **OpenAI Java Client**: Integrates the OpenAI API.
 - **Docker**: Containerization.
 
-### AI Services
-- **OpenAI GPT API**: Powers the natural language processing for insightful responses.
+### AI Service
+- **Assistant**: Powers the natural language processing for insightful responses.
 
 ## 🎨 Visualization
 
@@ -116,7 +111,6 @@ All axes range from -100 to 100, providing a clear visual representation of each
 
 You can ask the AI chatbot various questions about your team:
 
-- "How does Alice compare to Bob in leadership style?"
 - "Which team members are most detail-oriented?"
 - "Show me employees with high influence scores."
 - "Who would work best together on a creative project?"
