@@ -7,9 +7,9 @@ The DISC Team Insights App is a full-stack, AI-powered platform designed to anal
 This application helps visualize, compare, and analyze team members' behavioral profiles based on their DISC assessment scores.
 It is designed as a full-stack solution with:
 
--- A powerful Spring Boot backend
--- A planned React frontend
--- Integrated AI capabilities for insights
+- A powerful Spring Boot backend
+- A planned React frontend
+- Integrated AI capabilities for insights
 
 Integrated AI capabilities for insights
 ## 🎯 Key Features
@@ -39,11 +39,6 @@ These instructions will get the backend server up and running on your local mach
 ### Prerequisites
 
 - Docker and Docker Compose must be installed on your system.
-- Create a local .env file and fill in the environment variables based on those defined in the docker-compose.yml, updating them with your own values
-    - Backend & frontend ports
-    - PostgreSQL credentials
-    - Redis configuration
-    - OpenAI API key
   
 ### Installation & Running
 
@@ -53,11 +48,10 @@ These instructions will get the backend server up and running on your local mach
    cd disc-ai-integrated-platform
    ```
 
-2. **Set up environment variables:**
-   Configure the `docker-compose.yml` file and add your OpenAI API key:
-   ```yaml
-   OPENAI_API_KEY=your_open_ai_api_key
-   ```
+2. **Create a local `.env` file in the project root with your OpenAI API key**
+    ```bash
+    echo "OPENAI_API_KEY=your_openai_api_key_here" > .env
+    ```
 
 3. **Build and start the application:**
    ```bash
@@ -68,8 +62,6 @@ These instructions will get the backend server up and running on your local mach
 
 - **Backend API**: http://localhost:8080
 - **Frontend**: http://localhost:3000
-- **PostgreSQL Database**: Available on port 5432
-- **Redis**: Available on port 1
 
 
 ## 🔌 API Endpoints
