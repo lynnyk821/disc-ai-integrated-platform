@@ -6,20 +6,6 @@ services:
     plan: free
     dockerfilePath: ./backend/Dockerfile
     envVars:
-      - key: SPRING_PROFILES_ACTIVE
-        value: docker
-      - key: SPRING_DATASOURCE_URL
-        fromDatabase:
-          name: disc-db
-          property: connectionString
-      - key: SPRING_DATASOURCE_USERNAME
-        fromDatabase:
-          name: disc-db
-          property: user
-      - key: SPRING_DATASOURCE_PASSWORD
-        fromDatabase:
-          name: disc-db
-          property: password
       - key: OPENAI_API_KEY
         sync: false
       - key: OPENAI_API_URL
@@ -27,17 +13,12 @@ services:
       - key: OPENAI_API_MODEL
         value: gpt-3.5-turbo
       - key: OPENAI_API_TEMPERATURE
-        value: "0.5"
-      - key: SPRING_REDIS_HOST
+        value: "0.7"
+      - key: REDIS_HOST
         fromService:
-          type: redis
           name: redis
-          property: host
-      - key: SPRING_REDIS_PORT
-        fromService:
-          type: redis
-          name: redis
-          property: port
+          property: connectionString
+          type: redis  # Changed from "URL" to "redis"
 
   # Frontend (React, served as static site)
   - type: web
@@ -45,12 +26,6 @@ services:
     env: docker
     plan: free
     dockerfilePath: ./frontend/Dockerfile
-    envVars:
-      - key: BACKEND_URL
-        fromService:
-          type: web
-          name: backend
-          property: host
 
   # Redis
   - type: redis
