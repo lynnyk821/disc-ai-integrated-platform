@@ -1,0 +1,60 @@
+services:
+  # Backend (Spring Boot)
+  - type: web
+    name: backend
+    env: docker
+    plan: free
+    dockerfilePath: ./backend/Dockerfile
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: docker
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: disc-db
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: disc-db
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: disc-db
+          property: password
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_API_URL
+        value: https://api.openai.com/v1
+      - key: OPENAI_API_MODEL
+        value: gpt-3.5-turbo
+      - key: OPENAI_API_TEMPERATURE
+        value: "0.5"
+      - key: SPRING_REDIS_HOST
+        fromService:
+          name: redis
+          property: host
+      - key: SPRING_REDIS_PORT
+        fromService:
+          name: redis
+          property: port
+
+  # Frontend (React, served as static site)
+  - type: web
+    name: frontend
+    env: docker
+    plan: free
+    dockerfilePath: ./frontend/Dockerfile
+    envVars:
+      - key: BACKEND_URL
+        fromService:
+          name: backend
+          property: host
+
+  # Redis
+  - type: redis
+    name: redis
+    ipAllowList: [] # доступ тільки з приватної мережі Render
+
+databases:
+  - name: disc-db
+    databaseName: disc_platform
+    user: disc_platform
