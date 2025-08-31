@@ -2,7 +2,7 @@
 FROM gradle:8.8-jdk21 AS builder
 WORKDIR /app
 COPY . .
-RUN gradle build -x test --no-daemon
+RUN ./gradlew build -x test --no-daemon
 
 # === Stage 2: Run the application ===
 FROM openjdk:21-jdk-slim
