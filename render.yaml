@@ -20,12 +20,6 @@ services:
           property: connectionString
           type: redis  # Changed from "URL" to "redis"
 
-  # Frontend (React, served as static site)
-  - type: web
-    name: frontend
-    env: docker
-    plan: free
-    dockerfilePath: ./frontend/Dockerfile
 
   # Redis
   - type: redis
