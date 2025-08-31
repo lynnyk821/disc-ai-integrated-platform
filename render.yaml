@@ -30,10 +30,12 @@ services:
         value: "0.5"
       - key: SPRING_REDIS_HOST
         fromService:
+          type: redis
           name: redis
           property: host
       - key: SPRING_REDIS_PORT
         fromService:
+          type: redis
           name: redis
           property: port
 
@@ -46,6 +48,7 @@ services:
     envVars:
       - key: BACKEND_URL
         fromService:
+          type: web
           name: backend
           property: host
 
