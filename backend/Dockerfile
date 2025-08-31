@@ -4,13 +4,6 @@ FROM gradle:8.8.0-jdk21-alpine as builder
 # Встановлюємо робочу директорію
 WORKDIR /app
 
-# Копіюємо файли Gradle для кращого кешування
-COPY backend/gradle ./gradle
-COPY backend/gradlew .
-COPY backend/gradle.properties .
-COPY backend/build.gradle .
-COPY backend/settings.gradle .
-
 # Надаємо права на виконання для gradlew
 RUN chmod +x gradlew
 
