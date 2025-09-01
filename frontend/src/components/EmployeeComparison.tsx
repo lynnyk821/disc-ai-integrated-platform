@@ -6,6 +6,8 @@ import { Progress } from "./ui/progress";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { Separator } from "./ui/separator";
 import axios from "axios";
+import {getHost} from "../data/getHost";
+
 
 interface EmployeeDTO {
   id: number;
@@ -64,7 +66,7 @@ export function EmployeeComparison({ selectedEmployees: initialSelected = [] }: 
 
   // Отримуємо всіх співробітників з бекенду
   useEffect(() => {
-    axios.get<EmployeeDTO[]>("http://localhost:8080/api/employees")
+    axios.get<EmployeeDTO[]>(`${getHost}/api/employees`)
         .then(response => {
           setAllEmployees(response.data);
           console.log(response.data);
@@ -90,7 +92,7 @@ export function EmployeeComparison({ selectedEmployees: initialSelected = [] }: 
 
     try {
       const response = await axios.post<EmployeesComparisonResultDTO>(
-          "http://localhost:8080/api/compare/employees",
+          `${getHost}/api/compare/employees`,
           { employeeIds: selectedIds }
       );
       setComparisonResult(response.data);

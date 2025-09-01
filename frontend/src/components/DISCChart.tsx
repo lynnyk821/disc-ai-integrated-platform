@@ -26,7 +26,7 @@ export function DISCChart({ onEmployeeSelect }: DISCChartProps) {
 
   useEffect(() => {
     axios
-        .get<any[]>("http://localhost:8080/api/chart")
+        .get<any[]>(`${getHost}/api/chart`)
         .then((res) => {
           const convertedData = res.data.map(item => ({
             name: item.name,

@@ -6,6 +6,8 @@ import { Input } from "./ui/input";
 import { ScrollArea } from "./ui/scroll-area";
 import { Badge } from "./ui/badge";
 import axios from "axios";
+import {getHost} from "../data/getHost";
+
 
 interface Message {
   id: string;
@@ -56,7 +58,7 @@ export function Chatbot({ className = "" }: ChatbotProps) {
   const generateResponse = async (userMessage: string): Promise<string> => {
     try {
       const response = await axios.post(
-          "http://localhost:8080/api/assistant/ask",
+          `${getHost}/api/assistant/ask`,
           null,
           {
             params: { message: userMessage },

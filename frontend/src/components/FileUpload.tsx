@@ -5,6 +5,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
 import { Alert, AlertDescription } from "./ui/alert";
 import { Badge } from "./ui/badge";
+import {getHost} from "../data/getHost";
+
+
 
 interface UploadedFile {
   id: string;
@@ -69,7 +72,7 @@ export function FileUpload() {
       formData.append("dataCSV", csvFile.file as File);
       formData.append("chartDataExcel", excelFile.file as File);
 
-      await axios.post("http://localhost:8080/api/upload/disc", formData, {
+      await axios.post(`${getHost}/api/upload/disc`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
