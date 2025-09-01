@@ -33,8 +33,11 @@ public class AssistantServiceImpl implements AssistantService {
     @Value("${openai.api.model}")
     private String model;
 
-    @Value("${openai.api.temperature}")
+    @Value("${openai.api.temperature:0.7}")
     private double temperature;
+
+    @Value("${chat.memory.limit:50}")
+    private int chatMemoryLimit;
 
     private WebClient webClient;
 
@@ -53,12 +56,24 @@ public class AssistantServiceImpl implements AssistantService {
 
     @Override
     public String generateResponse(String userQuestion) {
-        List<EmployeeEntity> employees = this.employeeRepository.findAll();
+        List<EmployeeEntity> employees = employeeRepository.findAll();
+        List<String> previousMessages = chatMemoryService.getLastMessages();
 
-        List<String> previousMessages = chatMemoryService.getLastMessages(10);
         String prompt = promptService.createUniversalPrompt(employees, userQuestion, previousMessages);
+        OpenAiRequest request = buildOpenAiRequest(prompt);
 
-        // 3. Створюємо запит до OpenAI
+        OpenAiResponse response = callOpenAi(request);
+
+        if (response != null) {
+            chatMemoryService.addMessage("User: " + userQuestion);
+            chatMemoryService.addMessage("Assistant: " + extractContent(response));
+            return extractContent(response);
+        }
+
+        return "No response from AI";
+    }
+
+    private OpenAiRequest buildOpenAiRequest(String prompt) {
         OpenAiRequest request = new OpenAiRequest();
         request.setModel(model);
         request.setTemperature(temperature);
@@ -68,24 +83,26 @@ public class AssistantServiceImpl implements AssistantService {
         userMessage.setContent(prompt);
 
         request.setMessages(List.of(userMessage));
+        return request;
+    }
 
-        // 4. Виконуємо запит
-        OpenAiResponse response = webClient.post()
-                .uri(apiUrl + "/chat/completions")
-                .bodyValue(request)
-                .retrieve()
-                .bodyToMono(OpenAiResponse.class)
-                .retryWhen(Retry.backoff(3, Duration.ofSeconds(2))
-                        .filter(throwable -> throwable instanceof WebClientResponseException.TooManyRequests))
-                .block();
-
-        // 5. Зберігаємо питання та відповідь через ChatMemoryService
-        if (response != null) {
-            chatMemoryService.addMessage("User: " + userQuestion);
-            chatMemoryService.addMessage("Assistant: " + response);
+    private OpenAiResponse callOpenAi(OpenAiRequest request) {
+        try {
+            return webClient.post()
+                    .uri("/chat/completions")
+                    .bodyValue(request)
+                    .retrieve()
+                    .bodyToMono(OpenAiResponse.class)
+                    .retryWhen(Retry.backoff(3, Duration.ofSeconds(2))
+                            .filter(throwable -> throwable instanceof WebClientResponseException.TooManyRequests))
+                    .block();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
+    }
 
-        assert response != null;
+    private String extractContent(OpenAiResponse response) {
         return response.getChoices().getFirst().getMessage().getContent();
     }
 }

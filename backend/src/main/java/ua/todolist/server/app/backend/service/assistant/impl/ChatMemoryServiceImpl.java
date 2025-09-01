@@ -1,34 +1,46 @@
 package ua.todolist.server.app.backend.service.assistant.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.core.ListOperations;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import ua.todolist.server.app.backend.database.entity.ChatMessageEntity;
+import ua.todolist.server.app.backend.database.repository.ChatMessageRepository;
 import ua.todolist.server.app.backend.service.assistant.ChatMemoryService;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class ChatMemoryServiceImpl implements ChatMemoryService {
-    private final RedisTemplate<String, String> redisTemplate;
-    private final static String REDIS_CHAT_KEY = "assistant:chat";
+
+    private final ChatMessageRepository chatMessageRepository;
+
+    @Value("${chat.memory.limit:25}")
+    private int messageLimit;
 
     @Override
     public void addMessage(String message) {
-        ListOperations<String, String> listOps = redisTemplate.opsForList();
-        listOps.rightPush(REDIS_CHAT_KEY, message);
-
-        // Тримати лише останні 50 повідомлень
-        listOps.trim(REDIS_CHAT_KEY, -50, -1);
+        ChatMessageEntity chatMessage = ChatMessageEntity.builder()
+                .role(message.startsWith("User:") ? "user" : "assistant")
+                .content(message)
+                .createdAt(LocalDateTime.now())
+                .build();
+        chatMessageRepository.save(chatMessage);
     }
 
     @Override
-    public List<String> getLastMessages(int n) {
-        ListOperations<String, String> listOps = redisTemplate.opsForList();
-        Long size = listOps.size(REDIS_CHAT_KEY);
-        if (size == null || size == 0) return Collections.emptyList();
-        return listOps.range(REDIS_CHAT_KEY, Math.max(0, size - n), size - 1);
+    public List<String> getLastMessages() {
+        List<ChatMessageEntity> messages = new ArrayList<>(chatMessageRepository
+                .findAll()
+                .stream()
+                .sorted((a, b) -> b.getCreatedAt().compareTo(a.getCreatedAt()))
+                .limit(messageLimit)
+                .toList());
+
+        Collections.reverse(messages);
+        return messages.stream().map(ChatMessageEntity::getContent).toList();
     }
 }

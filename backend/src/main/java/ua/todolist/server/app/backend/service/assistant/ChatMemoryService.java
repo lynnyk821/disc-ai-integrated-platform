@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface ChatMemoryService {
     void addMessage(String message);
-    List<String> getLastMessages(int n);
+    List<String> getLastMessages();
 }
