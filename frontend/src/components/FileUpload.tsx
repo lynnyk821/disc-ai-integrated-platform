@@ -5,8 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
 import { Alert, AlertDescription } from "./ui/alert";
 import { Badge } from "./ui/badge";
-import {getHost} from "../data/getHost";
-
 
 
 interface UploadedFile {

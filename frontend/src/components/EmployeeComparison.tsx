@@ -56,9 +56,7 @@ interface EmployeeComparisonProps {
 }
 
 export function EmployeeComparison({ selectedEmployees: initialSelected = [] }: EmployeeComparisonProps) {
-  const [selectedIds, setSelectedIds] = useState<number[]>(
-      initialSelected.map(emp => emp.id)
-  );
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [allEmployees, setAllEmployees] = useState<EmployeeDTO[]>([]);
   const [comparisonResult, setComparisonResult] = useState<EmployeesComparisonResultDTO | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
