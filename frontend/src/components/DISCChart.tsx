@@ -26,7 +26,7 @@ export function DISCChart({ onEmployeeSelect }: DISCChartProps) {
 
   useEffect(() => {
     axios
-        .get<any[]>(`${getHost}/api/chart`)
+        .get<any[]>(`https://disc-platform-ai-backend.onrender.com/api/chart`)
         .then((res) => {
           const convertedData = res.data.map(item => ({
             name: item.name,

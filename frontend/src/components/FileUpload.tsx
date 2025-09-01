@@ -72,7 +72,7 @@ export function FileUpload() {
       formData.append("dataCSV", csvFile.file as File);
       formData.append("chartDataExcel", excelFile.file as File);
 
-      await axios.post(`${getHost}/api/upload/disc`, formData, {
+      await axios.post(`https://disc-platform-ai-backend.onrender.com/api/upload/disc`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 

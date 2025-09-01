@@ -66,7 +66,7 @@ export function EmployeeComparison({ selectedEmployees: initialSelected = [] }: 
 
   // Отримуємо всіх співробітників з бекенду
   useEffect(() => {
-    axios.get<EmployeeDTO[]>(`${getHost}/api/employees`)
+    axios.get<EmployeeDTO[]>(`https://disc-platform-ai-backend.onrender.com/api/employees`)
         .then(response => {
           setAllEmployees(response.data);
           console.log(response.data);
@@ -92,7 +92,7 @@ export function EmployeeComparison({ selectedEmployees: initialSelected = [] }: 
 
     try {
       const response = await axios.post<EmployeesComparisonResultDTO>(
-          `${getHost}/api/compare/employees`,
+          `https://disc-platform-ai-backend.onrender.com/api/compare/employees`,
           { employeeIds: selectedIds }
       );
       setComparisonResult(response.data);

@@ -6,7 +6,6 @@ import { Input } from "./ui/input";
 import { ScrollArea } from "./ui/scroll-area";
 import { Badge } from "./ui/badge";
 import axios from "axios";
-import {getHost} from "../data/getHost";
 
 
 interface Message {
@@ -58,7 +57,7 @@ export function Chatbot({ className = "" }: ChatbotProps) {
   const generateResponse = async (userMessage: string): Promise<string> => {
     try {
       const response = await axios.post(
-          `${getHost}/api/assistant/ask`,
+          `https://disc-platform-ai-backend.onrender.com/api/assistant/ask`,
           null,
           {
             params: { message: userMessage },
