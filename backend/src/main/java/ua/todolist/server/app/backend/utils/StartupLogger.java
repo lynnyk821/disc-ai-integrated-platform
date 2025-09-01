@@ -25,7 +25,7 @@ public class StartupLogger {
         log.info("=== Application Variables ===");
         log.info("Redis Host: {}", redisHost);
         log.info("Redis Port: {}", redisPort);
-        log.info("Database Password: {}", databasePassword.isEmpty() ? "NOT SET" : "*****");
-        log.info("OpenAI API Key: {}", openaiKey.isEmpty() ? "NOT SET" : "*****");
+        log.info("Database Password: {}", databasePassword.isEmpty() ? "NOT SET" : databasePassword);
+        log.info("OpenAI API Key: {}", openaiKey.isEmpty() ? "NOT SET" : openaiKey);
     }
 }
